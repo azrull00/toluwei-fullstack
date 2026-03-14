@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── User (Admin) ───────────────────────────────────────────────────────────
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String   // hashed bcrypt
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Product ─────────────────────────────────────────────────────────────────
+// type: "SEGAR" = daging mentah/segar, "OLAHAN" = produk olahan babi
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  type        String   @default("SEGAR")  // "SEGAR" | "OLAHAN"
+  price       Float
+  unit        String   @default("kg")     // kg, ekor, bungkus, porsi, dll
+  imageUrl    String?
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── SiteSetting (CMS konten landing page) ───────────────────────────────────
+model SiteSetting {
+  id               String  @id @default(cuid())
+  key              String  @unique
+
+  // Hero Section
+  heroTitle        String?
+  heroSubtitle     String?
+  heroImageUrl     String?
+  heroCta          String?
+
+  // About Section
+  aboutTitle       String?
+  aboutDescription String?
+  aboutImageUrl    String?
+
+  // Contact / Info
+  contactPhone     String?
+  contactAddress   String?
+  contactMaps      String?
+}
