@@ -15,6 +15,7 @@ export const BRAND = {
 export const NAV_LINKS: NavItem[] = [
     { label: "Beranda", href: "#home" },
     { label: "Produk", href: "#produk" },
+    { label: "Katalog", href: "/katalog" },
     { label: "Tentang Kami", href: "#tentang" },
     { label: "Kontak", href: "#kontak" },
 ];

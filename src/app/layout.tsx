@@ -30,6 +30,15 @@ export const metadata: Metadata = {
     "babi Sumba",
     "toko daging babi NTT",
   ],
+  icons: {
+    icon: [
+      { url: "/toluwei.jpg", type: "image/jpeg" },
+    ],
+    apple: [
+      { url: "/toluwei.jpg", type: "image/jpeg" },
+    ],
+    shortcut: "/toluwei.jpg",
+  },
 };
 
 export default function RootLayout({

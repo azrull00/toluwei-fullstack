@@ -68,7 +68,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
                 </div>
 
                 {/* Headline */}
-                <h1 className="animate-fade-up text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.08] mb-6">
+                <h1 className="animate-fade-up text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white tracking-tight leading-[1.08] mb-6">
                     {beforeAmp}
                     {afterAmp && (
                         <>
@@ -87,12 +87,12 @@ export function HeroSection({ settings }: HeroSectionProps) {
                 </div>
 
                 {/* Subtitle */}
-                <p className="animate-fade-up delay-200 text-white/55 text-lg sm:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-light">
+                <p className="animate-fade-up delay-200 text-white/55 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto mb-10 sm:mb-12 leading-relaxed font-light">
                     {subtitle}
                 </p>
 
                 {/* CTA Buttons */}
-                <div className="animate-fade-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <div className="animate-fade-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full px-4 sm:px-0">
                     <button
                         onClick={() => scroll("produk")}
                         className="group flex items-center gap-2.5 bg-[#B03A2E] hover:bg-[#922B21] text-white font-semibold text-base px-8 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-red-950/50 hover:shadow-xl hover:shadow-red-950/60 hover:-translate-y-0.5 cursor-pointer"
@@ -111,7 +111,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
                 </div>
 
                 {/* Stats row */}
-                <div className="animate-fade-up delay-400 mt-20 pt-10 border-t border-white/10 grid grid-cols-3 gap-6 max-w-sm mx-auto">
+                <div className="animate-fade-up delay-400 mt-14 sm:mt-20 pt-8 sm:pt-10 border-t border-white/10 grid grid-cols-3 gap-4 sm:gap-6 max-w-xs sm:max-w-sm mx-auto">
                     {[
                         { value: "100%", label: "Segar Harian" },
                         { value: "7+", label: "Jenis Produk" },

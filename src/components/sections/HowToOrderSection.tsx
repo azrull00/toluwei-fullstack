@@ -29,7 +29,7 @@ const STEPS = [
 
 export function HowToOrderSection() {
     return (
-        <section className="py-24 bg-[#FAFAF8]">
+        <section className="py-16 sm:py-20 lg:py-24 bg-[#FAFAF8]">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 <AnimateOnScroll animation="fade-up" className="text-center mb-16">
                     <span className="section-label">Cara Pemesanan</span>
@@ -52,7 +52,7 @@ export function HowToOrderSection() {
                                 animation="fade-up"
                                 delay={([0, 100, 200, 300] as const)[i]}
                             >
-                                <div className="relative flex flex-col items-center text-center sm:items-start sm:text-left">
+                                <div className="relative flex flex-col items-center text-center">
                                     {/* Step number circle */}
                                     <div className="relative z-10 w-20 h-20 rounded-2xl bg-white border border-stone-100 shadow-sm flex flex-col items-center justify-center mb-5">
                                         <span className="text-2xl">{emoji}</span>
