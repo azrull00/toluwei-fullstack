@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Package, Eye, EyeOff, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { getAllProducts } from "@/services/product.service";
