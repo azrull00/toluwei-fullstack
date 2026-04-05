@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Playfair_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -39,7 +40,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body className={`${poppins.variable} ${playfair.variable} antialiased`}>{children}</body>
+      <body className={`${poppins.variable} ${playfair.variable} antialiased`}>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
