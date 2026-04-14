@@ -1,8 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
 import {
     createProduct,
     updateProduct,
@@ -10,36 +8,17 @@ import {
 } from "@/services/product.service";
 import type { ActionResult } from "@/types";
 
+// ─── CATATAN PENTING ─────────────────────────────────────────────────────────
+// Upload file lokal (fs/promises writeFile) TIDAK bisa digunakan di Vercel
+// karena filesystem serverless bersifat read-only.
+// Gunakan imageUrl (URL eksternal: Cloudinary, Imgur, dll) untuk gambar produk.
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-async function handleImageUpload(formData: FormData): Promise<string | null> {
-    try {
-        const file = formData.get("imageFile") as File | null;
-        if (file && file.size > 0) {
-            // Validate file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                throw new Error("Ukuran file maks 5MB.");
-            }
-            // Validate file type
-            const validTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
-            if (!validTypes.includes(file.type)) {
-                throw new Error("Format file harus JPG, PNG, atau WEBP.");
-            }
-            const bytes = await file.arrayBuffer();
-            const buffer = Buffer.from(bytes);
-            const ext = file.name.split(".").pop() ?? "jpg";
-            const name = `${Date.now()}.${ext}`;
-            const dir = join(process.cwd(), "public", "uploads");
-            await mkdir(dir, { recursive: true });
-            await writeFile(join(dir, name), buffer);
-            return `/uploads/${name}`;
-        }
-        // Fall-back to URL input
-        const url = (formData.get("imageUrl") as string)?.trim();
-        return url || null;
-    } catch (error) {
-        if (error instanceof Error) throw error;
-        throw new Error("Gagal mengupload gambar.");
-    }
+// Hanya membaca imageUrl dari form (URL eksternal Cloudinary/Imgur/dsb)
+// File upload lokal dihapus karena tidak kompatibel dengan Vercel serverless.
+function handleImageUpload(formData: FormData): string | null {
+    const url = (formData.get("imageUrl") as string)?.trim();
+    return url || null;
 }
 
 function validateProductFields(formData: FormData) {
@@ -73,7 +52,7 @@ export async function createProductAction(
 ): Promise<ActionResult> {
     try {
         const fields = validateProductFields(formData);
-        const imageUrl = await handleImageUpload(formData);
+        const imageUrl = handleImageUpload(formData);
 
         const result = await createProduct({ ...fields, imageUrl });
         if (!result.success) {
@@ -104,12 +83,9 @@ export async function updateProductAction(
         const newFile = formData.get("imageFile") as File | null;
         let imageUrl: string | null;
 
-        if (newFile && newFile.size > 0) {
-            imageUrl = await handleImageUpload(formData);
-        } else {
-            const urlInput = (formData.get("imageUrl") as string)?.trim();
-            imageUrl = urlInput || null;
-        }
+        // Selalu pakai URL dari form (tidak ada file upload lokal di production)
+        void newFile; // variabel tersisa, diabaikan
+        imageUrl = handleImageUpload(formData);
 
         const result = await updateProduct(id, { ...fields, imageUrl });
         if (!result.success) {
