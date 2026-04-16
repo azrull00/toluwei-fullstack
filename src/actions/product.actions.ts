@@ -5,22 +5,32 @@ import {
     createProduct,
     updateProduct,
     deleteProduct,
+    getProductById,
 } from "@/services/product.service";
+import { uploadImageToBlob, deleteImageFromBlob, isBlobConfigured } from "@/lib/blob";
 import type { ActionResult } from "@/types";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-// Prioritas: imageBase64 (upload dari file) > imageUrl (URL teks manual)
-// Base64 data URI disimpan langsung ke kolom imageUrl (TEXT) di Neon Postgres.
-
+// ─── Konstanta ────────────────────────────────────────────────────────────────
 // Batas backend: 4.5MB total body Vercel → Base64 max ~4.4MB
-// (Base64 string length × 0.75 = byte size asli)
 const MAX_BASE64_BYTES = 4.5 * 1024 * 1024;
 
-function resolveImageUrl(formData: FormData): string | null {
-    // 1. Cek apakah ada file yang diupload (dikirim sebagai Base64 data URI)
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/**
+ * Proses gambar dari formData:
+ * 1. Jika ada Base64 (upload file) → upload ke Vercel Blob → return URL CDN
+ * 2. Jika Blob belum dikonfigurasi → simpan Base64 langsung (fallback dev)
+ * 3. Jika ada imageUrl (URL teks) → return URL tersebut
+ * 4. Tidak ada gambar → return null
+ */
+async function processImage(
+    formData: FormData,
+    productName: string
+): Promise<string | null> {
     const base64 = (formData.get("imageBase64") as string)?.trim();
+
     if (base64 && base64.startsWith("data:image/")) {
-        // Validasi ukuran di backend — cegah payload terlalu besar
+        // Validasi ukuran
         const base64Data = base64.split(",")[1] ?? "";
         const estimatedBytes = (base64Data.length * 3) / 4;
         if (estimatedBytes > MAX_BASE64_BYTES) {
@@ -28,9 +38,21 @@ function resolveImageUrl(formData: FormData): string | null {
                 `Ukuran gambar terlalu besar (${(estimatedBytes / 1024 / 1024).toFixed(1)}MB). Maksimal 4.5MB.`
             );
         }
+
+        // Upload ke Vercel Blob jika sudah dikonfigurasi
+        if (isBlobConfigured()) {
+            return await uploadImageToBlob(base64, productName);
+        }
+
+        // Fallback: simpan Base64 langsung (hanya untuk development lokal)
+        console.warn(
+            "[processImage] BLOB_READ_WRITE_TOKEN belum dikonfigurasi. " +
+            "Gambar disimpan sebagai Base64 — tidak cocok untuk production dengan banyak produk."
+        );
         return base64;
     }
-    // 2. Fallback ke URL teks jika tidak ada file upload
+
+    // Fallback ke URL teks
     const url = (formData.get("imageUrl") as string)?.trim();
     return url || null;
 }
@@ -66,7 +88,7 @@ export async function createProductAction(
 ): Promise<ActionResult> {
     try {
         const fields = validateProductFields(formData);
-        const imageUrl = resolveImageUrl(formData);
+        const imageUrl = await processImage(formData, fields.name);
 
         const result = await createProduct({ ...fields, imageUrl });
         if (!result.success) {
@@ -76,6 +98,7 @@ export async function createProductAction(
         revalidatePath("/admin/products");
         revalidatePath("/admin");
         revalidatePath("/");
+        revalidatePath("/katalog");
         return { success: true };
     } catch (e) {
         console.error("[createProductAction]", e);
@@ -94,9 +117,17 @@ export async function updateProductAction(
         if (!id) return { success: false, error: "ID produk tidak ditemukan." };
 
         const fields = validateProductFields(formData);
-        const imageUrl = resolveImageUrl(formData);
+        const newImageUrl = await processImage(formData, fields.name);
 
-        const result = await updateProduct(id, { ...fields, imageUrl });
+        // Jika ada gambar baru dari Blob, hapus gambar lama dari Blob
+        if (newImageUrl && isBlobConfigured()) {
+            const existing = await getProductById(id);
+            if (existing?.imageUrl && existing.imageUrl !== newImageUrl) {
+                await deleteImageFromBlob(existing.imageUrl);
+            }
+        }
+
+        const result = await updateProduct(id, { ...fields, imageUrl: newImageUrl });
         if (!result.success) {
             return { success: false, error: result.error ?? "Gagal mengupdate produk." };
         }
@@ -105,6 +136,7 @@ export async function updateProductAction(
         revalidatePath(`/admin/products/${id}/edit`);
         revalidatePath("/admin");
         revalidatePath("/");
+        revalidatePath("/katalog");
         return { success: true };
     } catch (e) {
         console.error("[updateProductAction]", e);
@@ -118,6 +150,14 @@ export async function deleteProductAction(id: string): Promise<ActionResult> {
     try {
         if (!id) return { success: false, error: "ID produk tidak ditemukan." };
 
+        // Hapus gambar dari Blob sebelum hapus record DB
+        if (isBlobConfigured()) {
+            const existing = await getProductById(id);
+            if (existing?.imageUrl) {
+                await deleteImageFromBlob(existing.imageUrl);
+            }
+        }
+
         const result = await deleteProduct(id);
         if (!result.success) {
             return { success: false, error: result.error ?? "Gagal menghapus produk." };
@@ -126,6 +166,7 @@ export async function deleteProductAction(id: string): Promise<ActionResult> {
         revalidatePath("/admin/products");
         revalidatePath("/admin");
         revalidatePath("/");
+        revalidatePath("/katalog");
         return { success: true };
     } catch (e) {
         console.error("[deleteProductAction]", e);
@@ -150,6 +191,7 @@ export async function togglePublishAction(
         revalidatePath("/admin/products");
         revalidatePath("/admin");
         revalidatePath("/");
+        revalidatePath("/katalog");
         return { success: true };
     } catch (e) {
         console.error("[togglePublishAction]", e);

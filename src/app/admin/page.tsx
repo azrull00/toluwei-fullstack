@@ -9,10 +9,16 @@ import { formatCurrency } from "@/lib/constants";
 export const metadata = { title: "Dashboard — Toluwei Admin" };
 
 export default async function AdminDashboardPage() {
-    const [products, settings] = await Promise.all([
+    const [rawProducts, settings] = await Promise.all([
         getAllProducts(),
         getSiteSettings(),
     ]);
+
+    // Strip Base64 dari list — tidak perlu gambar di dashboard
+    const products = rawProducts.map((p) => ({
+        ...p,
+        imageUrl: p.imageUrl?.startsWith("data:") ? "__base64__" : (p.imageUrl ?? null),
+    }));
 
     const published = products.filter(p => p.isPublished).length;
     const draft = products.length - published;

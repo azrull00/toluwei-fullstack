@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getSiteSettings } from "@/services/site-setting.service";
 import { ContentForm } from "@/components/admin/ContentForm";
 

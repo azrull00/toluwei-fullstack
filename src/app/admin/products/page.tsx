@@ -1,13 +1,33 @@
+// Force dynamic — jangan di-prerender/ISR karena data produk berubah
+// dan gambar Base64 bisa sangat besar (melebihi limit 19MB Vercel ISR)
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { Plus, Pencil, ShoppingBag } from "lucide-react";
 import { getAllProducts } from "@/services/product.service";
 import { DeleteButton } from "@/components/admin/DeleteButton";
 import { formatCurrency, PRODUCT_TYPES } from "@/lib/constants";
+import type { Product } from "@/types";
 
 export const metadata = { title: "Kelola Produk — Toluwei Admin" };
 
+/**
+ * Untuk list view, kita TIDAK kirim Base64 penuh ke HTML (bisa puluhan MB).
+ * Cukup tandai apakah produk punya gambar — thumbnail ditampilkan via
+ * komponen client yang lazy-load dari endpoint terpisah jika diperlukan.
+ * Untuk URL eksternal (http/https), tetap dikirim apa adanya.
+ */
+function sanitizeForList(products: Product[]) {
+    return products.map((p) => ({
+        ...p,
+        // Ganti Base64 dengan flag khusus — jangan embed di HTML
+        imageUrl: p.imageUrl?.startsWith("data:") ? "__base64__" : (p.imageUrl ?? null),
+    }));
+}
+
 export default async function AdminProductsPage() {
-    const products = await getAllProducts();
+    const raw = await getAllProducts();
+    const products = sanitizeForList(raw);
 
     return (
         <div className="space-y-6 max-w-5xl">
@@ -57,9 +77,11 @@ export default async function AdminProductsPage() {
                                             {/* Thumbnail — desktop */}
                                             <td className="px-5 py-3.5">
                                                 <div className="w-12 h-12 rounded-xl overflow-hidden bg-white/5 border border-white/8 flex items-center justify-center shrink-0">
-                                                    {p.imageUrl ? (
+                                                    {p.imageUrl && p.imageUrl !== "__base64__" ? (
                                                         // eslint-disable-next-line @next/next/no-img-element
                                                         <img src={p.imageUrl} alt={p.name} className="object-cover w-full h-full" />
+                                                    ) : p.imageUrl === "__base64__" ? (
+                                                        <span className="text-[9px] text-stone-500 font-medium text-center leading-tight px-1">Ada<br/>Foto</span>
                                                     ) : (
                                                         <ShoppingBag className="w-5 h-5 text-stone-700" strokeWidth={1} />
                                                     )}
@@ -122,9 +144,11 @@ export default async function AdminProductsPage() {
                                 <div className="flex items-start gap-3">
                                     {/* Thumbnail — mobile card */}
                                     <div className="w-14 h-14 rounded-xl overflow-hidden bg-white/5 border border-white/8 flex items-center justify-center shrink-0">
-                                        {p.imageUrl ? (
+                                        {p.imageUrl && p.imageUrl !== "__base64__" ? (
                                             // eslint-disable-next-line @next/next/no-img-element
                                             <img src={p.imageUrl} alt={p.name} className="object-cover w-full h-full" />
+                                        ) : p.imageUrl === "__base64__" ? (
+                                            <span className="text-[9px] text-stone-500 font-medium text-center leading-tight px-1">Ada<br/>Foto</span>
                                         ) : (
                                             <ShoppingBag className="w-6 h-6 text-stone-700" strokeWidth={1} />
                                         )}
