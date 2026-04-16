@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect } from "react";
 import { updateSiteSettingAction } from "@/actions/site-setting.actions";
-import { Loader2, CheckCircle2, AlertCircle, Map } from "lucide-react";
+import { Loader2, CheckCircle2 } from "lucide-react";
+import { toast } from "@/components/ui/Toast";
 import type { SiteSetting, ActionResult } from "@/types";
 
 export function ContentForm({ settings }: { settings: SiteSetting | null }) {
@@ -10,7 +11,16 @@ export function ContentForm({ settings }: { settings: SiteSetting | null }) {
         updateSiteSettingAction,
         null
     );
-    const [mapsUrl, setMapsUrl] = useState(settings?.contactMaps ?? "");
+
+    // Toast saat state berubah
+    useEffect(() => {
+        if (state?.success) {
+            toast.success("Konten disimpan", "Perubahan berhasil diterapkan ke website.");
+        }
+        if (state?.error) {
+            toast.error("Gagal menyimpan", state.error);
+        }
+    }, [state]);
 
     const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-stone-600 text-sm focus:outline-none focus:border-[#B03A2E] focus:ring-1 focus:ring-[#B03A2E] transition-colors";
     const labelCls = "block text-stone-400 text-xs font-medium mb-1.5 uppercase tracking-wide";
@@ -23,19 +33,6 @@ export function ContentForm({ settings }: { settings: SiteSetting | null }) {
 
     return (
         <form action={formAction} className="space-y-0">
-            {state?.error && (
-                <div className="flex items-center gap-2.5 bg-red-950/40 border border-red-800/40 rounded-xl px-4 py-3 mb-5">
-                    <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
-                    <p className="text-red-400 text-sm">{state.error}</p>
-                </div>
-            )}
-            {state?.success && (
-                <div className="flex items-center gap-2.5 bg-green-950/40 border border-green-800/40 rounded-xl px-4 py-3 mb-5">
-                    <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0" />
-                    <p className="text-green-400 text-sm">Konten berhasil disimpan!</p>
-                </div>
-            )}
-
             {/* ── Hero ── */}
             <SectionHeader title="🎯 Bagian Hero (Halaman Utama)" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">

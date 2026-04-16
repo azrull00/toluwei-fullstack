@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { ToastContainer } from "@/components/ui/Toast";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -177,6 +178,7 @@ export default function RootLayout({
       </head>
       <body className={`${poppins.variable} ${playfair.variable} antialiased`}>
         <GoogleAnalytics />
+        <ToastContainer />
         {children}
       </body>
     </html>

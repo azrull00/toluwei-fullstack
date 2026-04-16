@@ -4,6 +4,7 @@ import { useActionState, useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Upload, X, AlertCircle, CheckCircle2, ImageIcon } from "lucide-react";
 import { createProductAction, updateProductAction } from "@/actions/product.actions";
+import { toast } from "@/components/ui/Toast";
 import type { Product, ActionResult } from "@/types";
 
 interface ProductFormProps {
@@ -51,9 +52,19 @@ export function ProductForm({ product }: ProductFormProps) {
 
     useEffect(() => {
         if (state?.success) {
+            toast.success(
+                isEdit ? "Produk diperbarui" : "Produk ditambahkan",
+                isEdit
+                    ? `"${product?.name}" berhasil disimpan.`
+                    : "Produk baru berhasil ditambahkan."
+            );
             router.push("/admin/products");
         }
-    }, [state?.success, router]);
+        if (state?.error) {
+            toast.error("Gagal menyimpan", state.error);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state]);
 
     const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
