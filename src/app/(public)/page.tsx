@@ -9,18 +9,34 @@ import { getSiteSettings } from "@/services/site-setting.service";
 import { getPublishedProducts } from "@/services/product.service";
 
 export const metadata: Metadata = {
-    title: "Toluwei – Daging Babi Segar & Olahan | Wudi, Sumba Timur",
+    title: "Toluwei – Jual Daging Babi Segar & Olahan | Wudi, Sumba Timur",
     description:
-        "Toluwei menyediakan daging babi segar berkualitas dan berbagai produk olahan babi terbaik di Wudi, Sumba Timur. Pesan via WhatsApp sekarang!",
+        "Toluwei jual daging babi segar berkualitas di Wudi, Sumba Timur, NTT. Tersedia babi potong, daging babi per kg, babi guling, sosis babi, dendeng babi. Harga terjangkau, higienis, antar ke lokasi. Pesan via WhatsApp sekarang!",
     keywords: [
-        "daging babi Sumba Timur", "olahan babi Toluwei", "daging babi segar Wudi",
-        "babi guling Sumba", "sosis babi NTT", "dendeng babi Sumba", "toko daging babi NTT","daging babi","babi"
+        "jual daging babi Sumba Timur",
+        "jual babi Sumba Timur",
+        "daging babi segar Wudi",
+        "babi potong Sumba Timur",
+        "babi guling Sumba Timur",
+        "sosis babi NTT",
+        "dendeng babi Sumba",
+        "olahan babi Toluwei",
+        "toko daging babi NTT",
+        "harga daging babi Sumba Timur",
+        "daging babi Waingapu",
+        "peternakan babi Sumba Timur",
+        "daging babi",
+        "babi",
+        "Toluwei",
     ],
+    alternates: { canonical: "https://toluwei.biz.id" },
     openGraph: {
-        title: "Toluwei – Daging Babi Segar & Olahan",
-        description: "Produk daging babi segar dan olahan berkualitas dari Wudi, Sumba Timur, NTT.",
+        title: "Toluwei – Jual Daging Babi Segar & Olahan | Sumba Timur",
+        description: "Jual daging babi segar dan olahan babi berkualitas dari Wudi, Sumba Timur, NTT. Pesan via WhatsApp!",
         type: "website",
         locale: "id_ID",
+        url: "https://toluwei.biz.id",
+        images: [{ url: "https://toluwei.biz.id/toluwei.jpg", width: 800, height: 800, alt: "Toluwei Daging Babi Sumba Timur" }],
     },
 };
 

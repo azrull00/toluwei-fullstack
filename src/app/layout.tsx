@@ -20,47 +20,58 @@ const playfair = Playfair_Display({
 
 // ─── SEO Metadata ─────────────────────────────────────────────────────────────
 export const metadata: Metadata = {
-  // ── Title ──────────────────────────────────────────────────────────────────
   title: {
-    default: "Toluwei – Daging Babi Segar & Olahan | Wudi, Sumba Timur",
-    template: "%s | Toluwei",
+    default: "Toluwei – Jual Daging Babi Segar & Olahan | Wudi, Sumba Timur",
+    template: "%s | Toluwei – Daging Babi Sumba Timur",
   },
 
-  // ── Description ────────────────────────────────────────────────────────────
   description:
-    "Toluwei menyediakan daging babi segar berkualitas dan berbagai produk olahan babi terbaik di Wudi, Sumba Timur, NTT. Tersedia babi potong, daging babi per kg, dan olahan babi siap saji. Pesan sekarang via WhatsApp!",
+    "Toluwei jual daging babi segar berkualitas di Wudi, Sumba Timur, NTT. Tersedia babi potong, daging babi per kg, babi guling, sosis babi, dendeng babi, dan olahan babi siap saji. Harga terjangkau, higienis, antar ke lokasi. Pesan via WhatsApp sekarang!",
 
-  // ── Keywords ───────────────────────────────────────────────────────────────
   keywords: [
-    // Lokasi spesifik
-    "daging babi Sumba Timur",
+    // ── Kata kunci utama (high intent) ──
+    "jual daging babi Sumba Timur",
+    "jual daging babi NTT",
+    "jual babi Sumba Timur",
+    "beli daging babi Sumba Timur",
+    "daging babi segar Sumba Timur",
+    "daging babi murah Sumba Timur",
+    // ── Lokasi spesifik ──
     "daging babi Wudi",
-    "daging babi NTT",
-    "babi potong Sumba",
+    "daging babi Waingapu",
+    "daging babi Sumba",
     "toko daging babi Sumba Timur",
-    // Produk utama
-    "daging babi segar",
+    "supplier daging babi NTT",
+    "penjual daging babi Sumba Timur",
+    // ── Produk spesifik ──
+    "babi potong Sumba Timur",
+    "babi guling Sumba Timur",
+    "sosis babi NTT",
+    "dendeng babi Sumba",
+    "olahan babi Sumba Timur",
     "daging babi per kg",
-    "babi potong",
-    "babi guling",
-    "olahan babi",
-    "daging babi olahan",
-    // Kandang & ternak
+    "daging babi segar",
+    "babi hidup Sumba Timur",
+    // ── Kandang & ternak ──
     "kandang babi Sumba Timur",
     "ternak babi NTT",
-    "peternak babi Sumba",
-    "jual babi hidup",
+    "peternak babi Sumba Timur",
+    "peternakan babi Wudi",
     "babi lokal Sumba",
-    // Brand
+    // ── Brand ──
     "Toluwei",
-    "Toluwei daging babi",
-    "Toluwei Sumba",
+    "Tolu Wei daging babi",
+    "Toluwei Sumba Timur",
+    "Toluwei Wudi",
+    // ── Long-tail ──
+    "pesan daging babi via WhatsApp Sumba Timur",
+    "daging babi antar ke rumah Sumba Timur",
+    "harga daging babi Sumba Timur",
   ],
 
-  // ── Canonical & Robots ─────────────────────────────────────────────────────
-  metadataBase: new URL("https://toluwei.vercel.app"),
+  metadataBase: new URL("https://toluwei.biz.id"),
   alternates: {
-    canonical: "/",
+    canonical: "https://toluwei.biz.id",
   },
   robots: {
     index: true,
@@ -74,38 +85,33 @@ export const metadata: Metadata = {
     },
   },
 
-  // ── Open Graph (Facebook, WhatsApp preview) ────────────────────────────────
   openGraph: {
     type: "website",
     locale: "id_ID",
-    url: "https://toluwei.vercel.app",
+    url: "https://toluwei.biz.id",
     siteName: "Toluwei",
-    title: "Toluwei – Daging Babi Segar & Olahan Terbaik di Sumba Timur",
+    title: "Toluwei – Jual Daging Babi Segar & Olahan Terbaik di Sumba Timur",
     description:
-      "Supplier daging babi segar dan olahan babi berkualitas di Wudi, Sumba Timur. Babi potong, daging per kg, dan produk olahan siap saji. Hubungi kami via WhatsApp!",
+      "Jual daging babi segar dan olahan babi berkualitas di Wudi, Sumba Timur, NTT. Babi potong, daging per kg, babi guling, sosis, dendeng. Harga terjangkau, antar ke lokasi. Hubungi via WhatsApp!",
     images: [
       {
-        url: "/toluwei.jpg",
-        width: 400,
-        height: 400,
-        alt: "Toluwei – Logo daging babi Sumba Timur",
+        url: "https://toluwei.biz.id/toluwei.jpg",
+        width: 800,
+        height: 800,
+        alt: "Toluwei – Jual Daging Babi Segar Sumba Timur NTT",
         type: "image/jpeg",
       },
     ],
   },
 
-  // ── Twitter Card ───────────────────────────────────────────────────────────
   twitter: {
-    card: "summary",
-    title: "Toluwei – Daging Babi Segar & Olahan | Sumba Timur",
+    card: "summary_large_image",
+    title: "Toluwei – Jual Daging Babi Segar & Olahan | Sumba Timur",
     description:
-      "Supplier daging babi segar dan olahan babi terbaik di Wudi, Sumba Timur, NTT.",
-    images: ["/toluwei.jpg"],
+      "Jual daging babi segar dan olahan babi terbaik di Wudi, Sumba Timur, NTT. Pesan via WhatsApp!",
+    images: ["https://toluwei.biz.id/toluwei.jpg"],
   },
 
-  // ── Icons / Favicon ────────────────────────────────────────────────────────
-  // File app/icon.tsx akan di-generate otomatis oleh Next.js App Router.
-  // Entry di sini sebagai fallback untuk browser lama.
   icons: {
     icon: [
       { url: "/toluwei.jpg", sizes: "32x32", type: "image/jpeg" },
@@ -115,14 +121,14 @@ export const metadata: Metadata = {
     shortcut: "/toluwei.jpg",
   },
 
-  // ── Author & Publisher ─────────────────────────────────────────────────────
-  authors: [{ name: "Toluwei", url: "https://toluwei.vercel.app" }],
+  authors: [{ name: "Toluwei", url: "https://toluwei.biz.id" }],
   creator: "Toluwei",
   publisher: "Toluwei",
-
-  // ── App-specific ───────────────────────────────────────────────────────────
   applicationName: "Toluwei",
   category: "food",
+
+  // Verifikasi Google Search Console — isi setelah daftar di GSC
+  // verification: { google: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" },
 };
 
 export default function RootLayout({
@@ -133,23 +139,28 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
-        {/* ── JSON-LD Schema — LocalBusiness ─────────────────────────────── */}
+        {/* ── JSON-LD: LocalBusiness + FoodEstablishment ──────────────── */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "LocalBusiness",
+              "@type": ["LocalBusiness", "FoodEstablishment", "Store"],
+              "@id": "https://toluwei.biz.id/#business",
               name: "Toluwei",
+              alternateName: ["Tolu Wei", "Toluwei Daging Babi", "Peternakan Toluwei"],
               description:
-                "Supplier daging babi segar dan olahan babi berkualitas di Wudi, Sumba Timur, NTT.",
-              url: "https://toluwei.vercel.app",
-              logo: "https://toluwei.vercel.app/toluwei.jpg",
-              image: "https://toluwei.vercel.app/toluwei.jpg",
+                "Toluwei adalah usaha jual daging babi segar dan olahan babi berkualitas di Wudi, Sumba Timur, NTT. Tersedia babi potong, daging per kg, babi guling, sosis babi, dendeng babi, dan produk olahan siap saji.",
+              url: "https://toluwei.biz.id",
+              logo: "https://toluwei.biz.id/toluwei.jpg",
+              image: "https://toluwei.biz.id/toluwei.jpg",
+              telephone: "+6281399263555",
               address: {
                 "@type": "PostalAddress",
+                streetAddress: "Wudi, Kec. Wulla Waijelu",
                 addressLocality: "Wudi",
                 addressRegion: "Sumba Timur",
+                postalCode: "87272",
                 addressCountry: "ID",
               },
               geo: {
@@ -157,21 +168,81 @@ export default function RootLayout({
                 latitude: "-9.6567",
                 longitude: "120.2641",
               },
-              areaServed: {
-                "@type": "AdministrativeArea",
-                name: "Sumba Timur, Nusa Tenggara Timur, Indonesia",
-              },
-              priceRange: "Rp",
-              telephone: "",           // Isi nomor WA/telepon jika ada
-              openingHoursSpecification: {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: [
-                  "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"
+              areaServed: [
+                { "@type": "City", name: "Waingapu" },
+                { "@type": "AdministrativeArea", name: "Sumba Timur" },
+                { "@type": "AdministrativeArea", name: "Nusa Tenggara Timur" },
+              ],
+              servesCuisine: "Indonesian",
+              priceRange: "Rp - Rp Rp",
+              currenciesAccepted: "IDR",
+              paymentAccepted: "Cash, Transfer Bank",
+              openingHoursSpecification: [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                  opens: "06:00",
+                  closes: "18:00",
+                },
+              ],
+              hasOfferCatalog: {
+                "@type": "OfferCatalog",
+                name: "Katalog Produk Toluwei",
+                itemListElement: [
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Product",
+                      name: "Daging Babi Segar",
+                      description: "Daging babi segar pilihan dari peternakan lokal Sumba Timur",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Product",
+                      name: "Babi Potong",
+                      description: "Babi potong segar siap masak dari Wudi, Sumba Timur",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Product",
+                      name: "Olahan Babi",
+                      description: "Produk olahan babi: sosis babi, dendeng babi, babi guling",
+                    },
+                  },
                 ],
-                opens: "07:00",
-                closes: "18:00",
               },
-              sameAs: [],              // Tambah link media sosial jika ada
+              sameAs: [
+                "https://www.facebook.com/profile.php?id=61575297768",
+                "https://www.instagram.com/toluwei",
+              ],
+            }),
+          }}
+        />
+        {/* ── JSON-LD: BreadcrumbList ──────────────────────────────────── */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Beranda",
+                  item: "https://toluwei.biz.id",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Katalog Produk",
+                  item: "https://toluwei.biz.id/katalog",
+                },
+              ],
             }),
           }}
         />
