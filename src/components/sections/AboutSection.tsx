@@ -31,7 +31,7 @@ export function AboutSection({ settings }: AboutSectionProps) {
                             <div className="relative rounded-3xl overflow-hidden bg-white aspect-square max-w-sm mx-auto lg:max-w-none shadow-xl shadow-stone-200">
                                 {/* Toluwei Logo */}
                                 <Image
-                                    src="/Toluwei.jpg"
+                                    src="/toluwei.jpg"
                                     alt="Logo Toluwei"
                                     fill
                                     className="object-contain p-8 animate-float"
