@@ -1,6 +1,12 @@
 import { prisma } from "@/lib/db";
 import type { Product, ProductCreateInput, ProductUpdateInput, ActionResult } from "@/types";
 
+// ─── Helper: serialize Prisma result ─────────────────────────────────────────
+// Prisma returns Date objects; cast to plain Product type for type safety.
+function toProduct(p: unknown): Product {
+    return p as Product;
+}
+
 // ─── Public ───────────────────────────────────────────────────────────────────
 
 /**
@@ -8,10 +14,16 @@ import type { Product, ProductCreateInput, ProductUpdateInput, ActionResult } fr
  * Sorted by createdAt desc
  */
 export async function getPublishedProducts(): Promise<Product[]> {
-    return prisma.product.findMany({
-        where: { isPublished: true },
-        orderBy: { createdAt: "desc" },
-    }) as Promise<Product[]>;
+    try {
+        const products = await prisma.product.findMany({
+            where: { isPublished: true },
+            orderBy: { createdAt: "desc" },
+        });
+        return products.map(toProduct);
+    } catch (error) {
+        console.error("[getPublishedProducts]", error);
+        return [];
+    }
 }
 
 // ─── Admin ────────────────────────────────────────────────────────────────────
@@ -20,18 +32,28 @@ export async function getPublishedProducts(): Promise<Product[]> {
  * Fetch all products regardless of published status (for admin)
  */
 export async function getAllProducts(): Promise<Product[]> {
-    return prisma.product.findMany({
-        orderBy: { createdAt: "desc" },
-    }) as Promise<Product[]>;
+    try {
+        const products = await prisma.product.findMany({
+            orderBy: { createdAt: "desc" },
+        });
+        return products.map(toProduct);
+    } catch (error) {
+        console.error("[getAllProducts]", error);
+        return [];
+    }
 }
 
 /**
  * Fetch a single product by ID
  */
 export async function getProductById(id: string): Promise<Product | null> {
-    return prisma.product.findUnique({
-        where: { id },
-    }) as Promise<Product | null>;
+    try {
+        const product = await prisma.product.findUnique({ where: { id } });
+        return product ? toProduct(product) : null;
+    } catch (error) {
+        console.error("[getProductById]", error);
+        return null;
+    }
 }
 
 /**
@@ -42,10 +64,10 @@ export async function createProduct(
 ): Promise<ActionResult<Product>> {
     try {
         const product = await prisma.product.create({ data });
-        return { success: true, data: product as Product };
+        return { success: true, data: toProduct(product) };
     } catch (error) {
         console.error("[createProduct]", error);
-        return { success: false, error: "Gagal membuat produk." };
+        return { success: false, error: "Gagal membuat produk. Periksa koneksi database." };
     }
 }
 
@@ -58,10 +80,10 @@ export async function updateProduct(
 ): Promise<ActionResult<Product>> {
     try {
         const product = await prisma.product.update({ where: { id }, data });
-        return { success: true, data: product as Product };
+        return { success: true, data: toProduct(product) };
     } catch (error) {
         console.error("[updateProduct]", error);
-        return { success: false, error: "Gagal mengupdate produk." };
+        return { success: false, error: "Gagal mengupdate produk. Periksa koneksi database." };
     }
 }
 
@@ -74,7 +96,7 @@ export async function deleteProduct(id: string): Promise<ActionResult> {
         return { success: true };
     } catch (error) {
         console.error("[deleteProduct]", error);
-        return { success: false, error: "Gagal menghapus produk." };
+        return { success: false, error: "Gagal menghapus produk. Periksa koneksi database." };
     }
 }
 

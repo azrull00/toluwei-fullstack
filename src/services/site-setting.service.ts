@@ -7,12 +7,17 @@ const SETTINGS_KEY = "main";
 
 /**
  * Fetch the main site settings (used by landing page)
- * Returns null if not seeded yet
+ * Returns null if not seeded yet — never throws.
  */
 export async function getSiteSettings(): Promise<SiteSetting | null> {
-    return prisma.siteSetting.findUnique({
-        where: { key: SETTINGS_KEY },
-    }) as Promise<SiteSetting | null>;
+    try {
+        return (await prisma.siteSetting.findUnique({
+            where: { key: SETTINGS_KEY },
+        })) as SiteSetting | null;
+    } catch (error) {
+        console.error("[getSiteSettings]", error);
+        return null;
+    }
 }
 
 // ─── Admin ────────────────────────────────────────────────────────────────────
@@ -32,6 +37,6 @@ export async function updateSiteSettings(
         return { success: true, data: settings as SiteSetting };
     } catch (error) {
         console.error("[updateSiteSettings]", error);
-        return { success: false, error: "Gagal mengupdate pengaturan website." };
+        return { success: false, error: "Gagal mengupdate pengaturan website. Periksa koneksi database." };
     }
 }

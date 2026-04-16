@@ -8,15 +8,16 @@ import {
 } from "@/services/product.service";
 import type { ActionResult } from "@/types";
 
-// ─── CATATAN PENTING ─────────────────────────────────────────────────────────
-// Upload file lokal (fs/promises writeFile) TIDAK bisa digunakan di Vercel
-// karena filesystem serverless bersifat read-only.
-// Gunakan imageUrl (URL eksternal: Cloudinary, Imgur, dll) untuk gambar produk.
-
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-// Hanya membaca imageUrl dari form (URL eksternal Cloudinary/Imgur/dsb)
-// File upload lokal dihapus karena tidak kompatibel dengan Vercel serverless.
-function handleImageUpload(formData: FormData): string | null {
+// Prioritas: imageBase64 (upload dari file) > imageUrl (URL teks manual)
+// Base64 data URI disimpan langsung ke kolom imageUrl (TEXT) di Neon Postgres.
+function resolveImageUrl(formData: FormData): string | null {
+    // 1. Cek apakah ada file yang diupload (dikirim sebagai Base64 data URI)
+    const base64 = (formData.get("imageBase64") as string)?.trim();
+    if (base64 && base64.startsWith("data:image/")) {
+        return base64;
+    }
+    // 2. Fallback ke URL teks jika tidak ada file upload
     const url = (formData.get("imageUrl") as string)?.trim();
     return url || null;
 }
@@ -52,7 +53,7 @@ export async function createProductAction(
 ): Promise<ActionResult> {
     try {
         const fields = validateProductFields(formData);
-        const imageUrl = handleImageUpload(formData);
+        const imageUrl = resolveImageUrl(formData);
 
         const result = await createProduct({ ...fields, imageUrl });
         if (!result.success) {
@@ -80,12 +81,7 @@ export async function updateProductAction(
         if (!id) return { success: false, error: "ID produk tidak ditemukan." };
 
         const fields = validateProductFields(formData);
-        const newFile = formData.get("imageFile") as File | null;
-        let imageUrl: string | null;
-
-        // Selalu pakai URL dari form (tidak ada file upload lokal di production)
-        void newFile; // variabel tersisa, diabaikan
-        imageUrl = handleImageUpload(formData);
+        const imageUrl = resolveImageUrl(formData);
 
         const result = await updateProduct(id, { ...fields, imageUrl });
         if (!result.success) {

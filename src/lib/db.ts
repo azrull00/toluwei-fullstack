@@ -1,8 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 
 // ─── Singleton Prisma Client ─────────────────────────────────────────────────
-// Vercel Serverless: jangan buat instance baru di setiap cold-start.
-// Pattern ini aman untuk Next.js (dev hot-reload & production serverless).
+// FIX: Simpan instance di globalThis untuk SEMUA environment (dev & production).
+// Tanpa ini, setiap Vercel serverless invocation membuat PrismaClient baru
+// yang menghabiskan connection pool Neon (max 5–10 koneksi di free tier).
+//
+// Referensi: https://www.prisma.io/docs/guides/performance-and-optimization/connection-management
 
 const globalForPrisma = globalThis as unknown as {
     prisma: PrismaClient | undefined;
@@ -15,11 +18,9 @@ export const prisma =
             process.env.NODE_ENV === "development"
                 ? ["query", "error", "warn"]
                 : ["error"],
-        // datasourceUrl di-override via env DATABASE_URL yang sudah
-        // mengandung ?pgbouncer=true untuk kompatibilitas Neon PgBouncer.
-        // directUrl (untuk migrasi Prisma) dikonfigurasi via DIRECT_URL di schema.
     });
 
-// Simpan instance hanya di development agar tidak ada koneksi bocor saat hot-reload.
-// Di production (Vercel), setiap function invocation mendapatkan instance segar.
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+// Selalu simpan instance di globalThis — baik dev maupun production.
+// Di production Vercel, globalThis bertahan selama lifetime function instance,
+// sehingga koneksi di-reuse antar request dalam instance yang sama.
+globalForPrisma.prisma = prisma;
