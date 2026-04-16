@@ -11,10 +11,11 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: false,
     unoptimized: false,
   },
-  // Naikkan batas body Server Action untuk menampung Base64 image (~2MB file → ~2.7MB Base64)
+  // Naikkan batas body Server Action untuk menampung Base64 image
+  // 3.3MB file → ~4.4MB Base64 → butuh body limit minimal 5MB
   experimental: {
     serverActions: {
-      bodySizeLimit: "4mb",
+      bodySizeLimit: "6mb",
     },
   },
 };

@@ -1,7 +1,8 @@
 "use client";
 
 import { ArrowDown, Flame } from "lucide-react";
-import { getWhatsAppUrl, BRAND } from "@/lib/constants";
+import { BRAND } from "@/lib/constants";
+import { WhatsAppPicker } from "@/components/ui/WhatsAppPicker";
 import type { SiteSetting } from "@/types";
 
 const scroll = (id: string) => {
@@ -20,7 +21,6 @@ export function HeroSection({ settings }: HeroSectionProps) {
         "Toluwei menghadirkan produk daging babi berkualitas langsung dari Wudi, Sumba Timur. Segar, higienis, dan lezat untuk setiap sajian.";
     const ctaText = settings?.heroCta ?? "Lihat Produk Kami";
 
-    // Split title around "&" for highlight
     const parts = title.split("&");
     const beforeAmp = parts[0];
     const afterAmp = parts[1];
@@ -30,7 +30,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
             id="home"
             className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#1A1614]"
         >
-            {/* Grain texture overlay */}
+            {/* Grain texture */}
             <div
                 className="absolute inset-0 opacity-30 pointer-events-none"
                 style={{
@@ -38,12 +38,8 @@ export function HeroSection({ settings }: HeroSectionProps) {
                     backgroundRepeat: "repeat",
                 }}
             />
-
-            {/* Gradient orbs */}
             <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-[#B03A2E]/15 blur-[120px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-[#D4AC0D]/10 blur-[100px] pointer-events-none" />
-
-            {/* Decorative vertical lines */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {[15, 35, 65, 85].map((pos) => (
                     <div
@@ -55,20 +51,20 @@ export function HeroSection({ settings }: HeroSectionProps) {
             </div>
 
             {/* Main content */}
-            <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+            <div className="relative z-10 max-w-4xl mx-auto px-5 sm:px-6 text-center">
                 {/* Badge */}
-                <div className="animate-fade-in inline-flex items-center gap-2.5 border border-white/15 bg-white/5 backdrop-blur-sm rounded-full px-5 py-2 mb-10">
+                <div className="animate-fade-in inline-flex items-center gap-2.5 border border-white/15 bg-white/5 backdrop-blur-sm rounded-full px-4 sm:px-5 py-2 mb-8 sm:mb-10">
                     <span className="relative flex h-2 w-2">
                         <span className="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-[#D4AC0D] opacity-75" />
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D4AC0D]" />
                     </span>
-                    <span className="text-white/70 text-xs font-medium tracking-widest uppercase">
+                    <span className="text-white/70 text-[11px] sm:text-xs font-medium tracking-widest uppercase">
                         {BRAND.location}
                     </span>
                 </div>
 
                 {/* Headline */}
-                <h1 className="animate-fade-up text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white tracking-tight leading-[1.08] mb-6">
+                <h1 className="animate-fade-up text-[2.2rem] sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white tracking-tight leading-[1.08] mb-5 sm:mb-6">
                     {beforeAmp}
                     {afterAmp && (
                         <>
@@ -80,46 +76,45 @@ export function HeroSection({ settings }: HeroSectionProps) {
                 </h1>
 
                 {/* Gold divider */}
-                <div className="animate-fade-in delay-200 flex items-center justify-center gap-4 mb-7">
-                    <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#D4AC0D]" />
+                <div className="animate-fade-in delay-200 flex items-center justify-center gap-4 mb-6 sm:mb-7">
+                    <div className="h-px w-12 sm:w-16 bg-gradient-to-r from-transparent to-[#D4AC0D]" />
                     <Flame className="w-4 h-4 text-[#D4AC0D]" />
-                    <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#D4AC0D]" />
+                    <div className="h-px w-12 sm:w-16 bg-gradient-to-l from-transparent to-[#D4AC0D]" />
                 </div>
 
                 {/* Subtitle */}
-                <p className="animate-fade-up delay-200 text-white/55 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto mb-10 sm:mb-12 leading-relaxed font-light">
+                <p className="animate-fade-up delay-200 text-white/55 text-sm sm:text-lg lg:text-xl max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed font-light">
                     {subtitle}
                 </p>
 
                 {/* CTA Buttons */}
-                <div className="animate-fade-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full px-4 sm:px-0">
+                <div className="animate-fade-up delay-300 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full">
                     <button
                         onClick={() => scroll("produk")}
-                        className="group flex items-center gap-2.5 bg-[#B03A2E] hover:bg-[#922B21] text-white font-semibold text-base px-8 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-red-950/50 hover:shadow-xl hover:shadow-red-950/60 hover:-translate-y-0.5 cursor-pointer"
+                        className="w-full sm:w-auto group flex items-center justify-center gap-2.5 bg-[#B03A2E] hover:bg-[#922B21] text-white font-semibold text-base px-8 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-red-950/50 hover:shadow-xl hover:-translate-y-0.5 cursor-pointer"
                     >
                         {ctaText}
                         <ArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
                     </button>
-                    <a
-                        href={getWhatsAppUrl()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2.5 border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white font-medium text-base px-8 py-4 rounded-xl transition-all duration-300 backdrop-blur-sm"
-                    >
-                        WhatsApp Kami
-                    </a>
+
+                    <WhatsAppPicker
+                        label="WhatsApp Kami"
+                        variant="ghost"
+                        size="lg"
+                        className="w-full sm:w-auto justify-center"
+                    />
                 </div>
 
                 {/* Stats row */}
-                <div className="animate-fade-up delay-400 mt-14 sm:mt-20 pt-8 sm:pt-10 border-t border-white/10 grid grid-cols-3 gap-4 sm:gap-6 max-w-xs sm:max-w-sm mx-auto">
+                <div className="animate-fade-up delay-400 mt-12 sm:mt-20 pt-7 sm:pt-10 border-t border-white/10 grid grid-cols-3 gap-4 sm:gap-6 max-w-xs sm:max-w-sm mx-auto">
                     {[
                         { value: "100%", label: "Segar Harian" },
                         { value: "7+", label: "Jenis Produk" },
                         { value: "Wudi", label: "Sumba Timur" },
                     ].map((s) => (
                         <div key={s.label} className="text-center">
-                            <div className="text-xl font-bold text-white">{s.value}</div>
-                            <div className="text-white/40 text-[11px] mt-1 uppercase tracking-wider">{s.label}</div>
+                            <div className="text-lg sm:text-xl font-bold text-white">{s.value}</div>
+                            <div className="text-white/40 text-[10px] sm:text-[11px] mt-1 uppercase tracking-wider">{s.label}</div>
                         </div>
                     ))}
                 </div>
@@ -128,7 +123,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
             {/* Scroll arrow */}
             <button
                 onClick={() => scroll("produk")}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/30 hover:text-white/60 transition-colors group cursor-pointer"
+                className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/30 hover:text-white/60 transition-colors group cursor-pointer"
                 aria-label="Scroll ke produk"
             >
                 <span className="text-[10px] uppercase tracking-widest font-medium">Scroll</span>

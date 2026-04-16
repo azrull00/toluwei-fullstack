@@ -11,6 +11,22 @@ export const BRAND = {
     email: "info@toluwei.com",
 } as const;
 
+// ─── Multi-Admin WhatsApp ─────────────────────────────────────────────────────
+export const WA_ADMINS = [
+    {
+        id: "admin1",
+        name: "Admin 1",
+        phone: "+62 813-9926-3555",
+        whatsapp: "6281399263555",
+    },
+    {
+        id: "admin2",
+        name: "Admin 2",
+        phone: "+62 822-4719-4435",
+        whatsapp: "6282247194435",
+    },
+] as const;
+
 // ─── Navigation ───────────────────────────────────────────────────────────────
 export const NAV_LINKS: NavItem[] = [
     { label: "Beranda", href: "#home" },
@@ -37,9 +53,18 @@ export function formatCurrency(amount: number): string {
 }
 
 // ─── WhatsApp ─────────────────────────────────────────────────────────────────
-export function getWhatsAppUrl(message?: string): string {
+/** Single-admin URL (legacy — masih dipakai di beberapa tempat) */
+export function getWhatsAppUrl(message?: string, waNumber?: string): string {
+    const number = waNumber ?? WA_ADMINS[0].whatsapp;
     const text = message ?? `Halo Toluwei, saya ingin memesan produk Anda.`;
-    return `https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
+}
+
+/** Build WA URL for a specific admin */
+export function getAdminWhatsAppUrl(adminId: "admin1" | "admin2", message?: string): string {
+    const admin = WA_ADMINS.find((a) => a.id === adminId) ?? WA_ADMINS[0];
+    const text = message ?? `Halo Toluwei, saya ingin memesan produk Anda.`;
+    return `https://wa.me/${admin.whatsapp}?text=${encodeURIComponent(text)}`;
 }
 
 // ─── Admin ────────────────────────────────────────────────────────────────────

@@ -13,8 +13,9 @@ import {
     ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { formatCurrency, getWhatsAppUrl, PRODUCT_TYPES, BRAND } from "@/lib/constants";
+import { formatCurrency, PRODUCT_TYPES, BRAND } from "@/lib/constants";
 import { AnimateOnScroll } from "@/components/ui/AnimateOnScroll";
+import { WhatsAppPicker } from "@/components/ui/WhatsAppPicker";
 import type { Product, ProductType } from "@/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -85,15 +86,13 @@ function CatalogProductCard({ product, index }: { product: Product; index: numbe
                             </p>
                             <span className="text-stone-400 text-[11px]">/ {product.unit}</span>
                         </div>
-                        <a
-                            href={getWhatsAppUrl(msg)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm font-semibold bg-[#B03A2E] hover:bg-[#922B21] text-white px-4 py-2.5 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-red-900/30 hover:-translate-y-0.5 flex items-center gap-1.5"
-                        >
-                            <ShoppingBag className="w-3.5 h-3.5" />
-                            Pesan
-                        </a>
+                        <WhatsAppPicker
+                            message={msg}
+                            label="Pesan"
+                            variant="primary"
+                            size="sm"
+                            icon={<ShoppingBag className="w-3.5 h-3.5" />}
+                        />
                     </div>
                 </div>
             </div>
@@ -370,14 +369,12 @@ export function KatalogClient({ products }: KatalogClientProps) {
                             <p className="text-white/50 text-sm sm:text-base max-w-md mx-auto mb-7">
                                 Hubungi kami langsung via WhatsApp untuk informasi ketersediaan dan harga spesial.
                             </p>
-                            <a
-                                href={getWhatsAppUrl()}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2.5 bg-[#B03A2E] hover:bg-[#922B21] text-white font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-red-900/40 hover:-translate-y-0.5"
-                            >
-                                Chat WhatsApp Sekarang
-                            </a>
+                            <WhatsAppPicker
+                                label="Chat WhatsApp Sekarang"
+                                variant="primary"
+                                size="md"
+                                className="px-8 py-3.5 rounded-xl"
+                            />
                         </div>
                     </div>
                 )}

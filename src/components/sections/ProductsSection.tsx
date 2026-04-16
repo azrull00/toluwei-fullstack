@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { ShoppingBag, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { formatCurrency, getWhatsAppUrl, PRODUCT_TYPES } from "@/lib/constants";
+import { formatCurrency, PRODUCT_TYPES } from "@/lib/constants";
 import { AnimateOnScroll } from "@/components/ui/AnimateOnScroll";
+import { WhatsAppPicker } from "@/components/ui/WhatsAppPicker";
 import type { Product, ProductType } from "@/types";
 
 // ─── ProductCard ──────────────────────────────────────────────────────────────
@@ -61,14 +62,13 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
                             </p>
                             <span className="text-stone-400 text-[11px]">/ {product.unit}</span>
                         </div>
-                        <a
-                            href={getWhatsAppUrl(msg)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs sm:text-sm font-semibold bg-[#B03A2E] hover:bg-[#922B21] text-white px-3 py-2 sm:px-4 sm:py-2 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-red-900/20 hover:-translate-y-0.5"
-                        >
-                            Pesan
-                        </a>
+                        <WhatsAppPicker
+                            message={msg}
+                            label="Pesan"
+                            variant="primary"
+                            size="sm"
+                            icon={<ShoppingBag className="w-3.5 h-3.5" />}
+                        />
                     </div>
                 </div>
             </div>
@@ -133,8 +133,8 @@ function ProductsGrid({ products }: { products: Product[] }) {
 
             {/* View All CTA */}
             {hasMore && (
-                <div className="text-center mt-12">
-                    <p className="text-stone-400 text-sm mb-5">
+                <div className="text-center mt-10 sm:mt-12">
+                    <p className="text-stone-400 text-sm mb-4 sm:mb-5">
                         Menampilkan <span className="font-semibold text-stone-600">{preview.length}</span> dari{" "}
                         <span className="font-semibold text-stone-600">{filtered.length}</span> produk
                     </p>

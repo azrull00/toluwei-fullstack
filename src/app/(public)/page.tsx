@@ -14,7 +14,7 @@ export const metadata: Metadata = {
         "Toluwei menyediakan daging babi segar berkualitas dan berbagai produk olahan babi terbaik di Wudi, Sumba Timur. Pesan via WhatsApp sekarang!",
     keywords: [
         "daging babi Sumba Timur", "olahan babi Toluwei", "daging babi segar Wudi",
-        "babi guling Sumba", "sosis babi NTT", "dendeng babi Sumba", "toko daging babi NTT",
+        "babi guling Sumba", "sosis babi NTT", "dendeng babi Sumba", "toko daging babi NTT","daging babi","babi"
     ],
     openGraph: {
         title: "Toluwei – Daging Babi Segar & Olahan",

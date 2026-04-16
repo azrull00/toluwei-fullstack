@@ -31,35 +31,41 @@ export function HowToOrderSection() {
     return (
         <section className="py-16 sm:py-20 lg:py-24 bg-[#FAFAF8]">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <AnimateOnScroll animation="fade-up" className="text-center mb-16">
+                <AnimateOnScroll animation="fade-up" className="text-center mb-10 sm:mb-16">
                     <span className="section-label">Cara Pemesanan</span>
-                    <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1A1614] leading-tight">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1A1614] leading-tight">
                         Pesan Mudah dalam 4 Langkah
                     </h2>
-                    <p className="text-stone-400 max-w-md mx-auto mt-4 text-[15px]">
+                    <p className="text-stone-400 max-w-md mx-auto mt-3 sm:mt-4 text-sm sm:text-[15px]">
                         Tidak perlu datang ke toko. Cukup WhatsApp dan pesanan Anda siap kami proses.
                     </p>
                 </AnimateOnScroll>
 
                 <div className="relative">
-                    {/* Connector line — desktop */}
-                    <div className="hidden sm:block absolute top-10 left-8 right-8 h-px bg-gradient-to-r from-transparent via-stone-200 to-transparent" />
+                    {/* Connector line — desktop only */}
+                    <div className="hidden lg:block absolute top-10 left-8 right-8 h-px bg-gradient-to-r from-transparent via-stone-200 to-transparent" />
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {/* Mobile: vertical stepper line */}
+                    <div className="lg:hidden absolute left-[39px] top-10 bottom-10 w-px bg-gradient-to-b from-transparent via-stone-200 to-transparent" />
+
+                    {/* Desktop grid / Mobile list */}
+                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 sm:gap-6">
                         {STEPS.map(({ num, title, desc, emoji }, i) => (
                             <AnimateOnScroll
                                 key={num}
                                 animation="fade-up"
                                 delay={([0, 100, 200, 300] as const)[i]}
                             >
-                                <div className="relative flex flex-col items-center text-center">
-                                    {/* Step number circle */}
-                                    <div className="relative z-10 w-20 h-20 rounded-2xl bg-white border border-stone-100 shadow-sm flex flex-col items-center justify-center mb-5">
-                                        <span className="text-2xl">{emoji}</span>
+                                {/* Mobile: horizontal row layout */}
+                                <div className="flex lg:flex-col items-start lg:items-center gap-4 lg:gap-0 lg:text-center">
+                                    <div className="relative z-10 w-[72px] h-[72px] sm:w-20 sm:h-20 rounded-2xl bg-white border border-stone-100 shadow-sm flex flex-col items-center justify-center shrink-0 lg:mb-5">
+                                        <span className="text-xl sm:text-2xl">{emoji}</span>
                                         <span className="text-[10px] font-bold text-stone-400 tracking-widest uppercase mt-0.5">{num}</span>
                                     </div>
-                                    <h3 className="text-[#1A1614] font-semibold mb-2 text-[15px] leading-snug">{title}</h3>
-                                    <p className="text-stone-400 text-sm leading-relaxed">{desc}</p>
+                                    <div className="pt-1 lg:pt-0">
+                                        <h3 className="text-[#1A1614] font-semibold mb-1 sm:mb-2 text-sm sm:text-[15px] leading-snug">{title}</h3>
+                                        <p className="text-stone-400 text-xs sm:text-sm leading-relaxed">{desc}</p>
+                                    </div>
                                 </div>
                             </AnimateOnScroll>
                         ))}

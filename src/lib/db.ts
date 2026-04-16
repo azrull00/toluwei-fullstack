@@ -21,6 +21,4 @@ export const prisma =
     });
 
 // Selalu simpan instance di globalThis — baik dev maupun production.
-// Di production Vercel, globalThis bertahan selama lifetime function instance,
-// sehingga koneksi di-reuse antar request dalam instance yang sama.
 globalForPrisma.prisma = prisma;

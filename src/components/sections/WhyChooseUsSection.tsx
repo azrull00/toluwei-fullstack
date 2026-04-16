@@ -38,7 +38,7 @@ const FEATURES = [
 
 export function WhyChooseUsSection() {
     return (
-        <section className="py-24 bg-[#1A1614] relative overflow-hidden">
+        <section className="py-16 sm:py-20 lg:py-24 bg-[#1A1614] relative overflow-hidden">
             {/* Subtle grid */}
             <div
                 className="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -49,29 +49,29 @@ export function WhyChooseUsSection() {
             />
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <AnimateOnScroll animation="fade-up" className="text-center mb-14">
+                <AnimateOnScroll animation="fade-up" className="text-center mb-10 sm:mb-14">
                     <span className="section-label" style={{ color: "#D4AC0D" }}>Mengapa Kami</span>
-                    <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight">
                         Kelebihan Produk Toluwei
                     </h2>
-                    <p className="text-stone-500 max-w-md mx-auto mt-4 text-[15px]">
+                    <p className="text-stone-500 max-w-md mx-auto mt-3 sm:mt-4 text-sm sm:text-[15px]">
                         Daging babi segar dan olahan berkualitas tinggi langsung dari jantung Sumba Timur.
                     </p>
                 </AnimateOnScroll>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                     {FEATURES.map(({ icon: Icon, title, desc, color, bg, border }, i) => (
                         <AnimateOnScroll
                             key={title}
                             animation="scale-in"
                             delay={([0, 100, 200, 300] as const)[i]}
                         >
-                            <div className={`${bg} border ${border} rounded-2xl p-6 h-full hover:bg-opacity-40 transition-colors`}>
-                                <div className={`${bg} border ${border} w-11 h-11 rounded-xl flex items-center justify-center mb-5`}>
-                                    <Icon className={`w-5 h-5 ${color}`} />
+                            <div className={`${bg} border ${border} rounded-2xl p-5 sm:p-6 h-full transition-colors`}>
+                                <div className={`${bg} border ${border} w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center mb-4 sm:mb-5`}>
+                                    <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${color}`} />
                                 </div>
-                                <h3 className="text-white font-semibold mb-2 text-[15px]">{title}</h3>
-                                <p className="text-stone-500 text-sm leading-relaxed">{desc}</p>
+                                <h3 className="text-white font-semibold mb-2 text-sm sm:text-[15px]">{title}</h3>
+                                <p className="text-stone-500 text-xs sm:text-sm leading-relaxed">{desc}</p>
                             </div>
                         </AnimateOnScroll>
                     ))}

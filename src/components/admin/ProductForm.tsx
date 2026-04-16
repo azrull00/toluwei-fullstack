@@ -12,9 +12,10 @@ interface ProductFormProps {
 
 const UNITS = ["kg", "ekor", "bungkus", "porsi", "250g", "500g", "100gr"];
 
-// Batas ukuran file: 2MB setelah Base64 encoding (~33% overhead)
-// 2MB file → ~2.7MB Base64 string — masih aman untuk Postgres TEXT
-const MAX_FILE_BYTES = 2 * 1024 * 1024;
+// Batas aman Vercel: body limit 4.5MB → file max ~3.3MB (Base64 +33% overhead)
+// 3.3MB × 1.33 ≈ 4.4MB Base64 — masih di bawah batas 4.5MB Vercel
+const MAX_FILE_BYTES = 3.3 * 1024 * 1024; // ~3.3 MB file
+const MAX_FILE_LABEL = "3.3MB";
 
 /** Konversi File ke Base64 data URI (misal: "data:image/jpeg;base64,/9j/4AAQ...") */
 function fileToBase64(file: File): Promise<string> {
@@ -62,7 +63,9 @@ export function ProductForm({ product }: ProductFormProps) {
 
         // Validasi ukuran
         if (file.size > MAX_FILE_BYTES) {
-            setUploadError(`Ukuran file terlalu besar (${(file.size / 1024 / 1024).toFixed(1)}MB). Maksimal 2MB.`);
+            setUploadError(
+                `Ukuran file terlalu besar (${(file.size / 1024 / 1024).toFixed(1)}MB). Maksimal ${MAX_FILE_LABEL}.`
+            );
             if (fileRef.current) fileRef.current.value = "";
             return;
         }
@@ -267,7 +270,7 @@ export function ProductForm({ product }: ProductFormProps) {
                                     Klik untuk pilih gambar
                                 </p>
                                 <p className="text-stone-600 text-xs mt-1">
-                                    JPG, PNG, WEBP — maks 2MB
+                                    JPG, PNG, WEBP — maks {MAX_FILE_LABEL}
                                 </p>
                             </>
                         )}

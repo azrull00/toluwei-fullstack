@@ -11,10 +11,23 @@ import type { ActionResult } from "@/types";
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 // Prioritas: imageBase64 (upload dari file) > imageUrl (URL teks manual)
 // Base64 data URI disimpan langsung ke kolom imageUrl (TEXT) di Neon Postgres.
+
+// Batas backend: 4.5MB total body Vercel → Base64 max ~4.4MB
+// (Base64 string length × 0.75 = byte size asli)
+const MAX_BASE64_BYTES = 4.5 * 1024 * 1024;
+
 function resolveImageUrl(formData: FormData): string | null {
     // 1. Cek apakah ada file yang diupload (dikirim sebagai Base64 data URI)
     const base64 = (formData.get("imageBase64") as string)?.trim();
     if (base64 && base64.startsWith("data:image/")) {
+        // Validasi ukuran di backend — cegah payload terlalu besar
+        const base64Data = base64.split(",")[1] ?? "";
+        const estimatedBytes = (base64Data.length * 3) / 4;
+        if (estimatedBytes > MAX_BASE64_BYTES) {
+            throw new Error(
+                `Ukuran gambar terlalu besar (${(estimatedBytes / 1024 / 1024).toFixed(1)}MB). Maksimal 4.5MB.`
+            );
+        }
         return base64;
     }
     // 2. Fallback ke URL teks jika tidak ada file upload
