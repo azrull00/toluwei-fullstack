@@ -128,7 +128,7 @@ export const metadata: Metadata = {
   category: "food",
 
   // Verifikasi Google Search Console — isi setelah daftar di GSC
-  // verification: { google: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" },
+  verification: { google: "google-site-verification=tkMKkupAEG5RJz8cBau0DAILW6_qobqKMLbCQ-LeeBw" },
 };
 
 export default function RootLayout({
